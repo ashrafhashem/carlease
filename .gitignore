@@ -6,8 +6,12 @@ launchConfigurations/
 # npm dependencies
 node_modules/
 
+
+Server_Side/logs
+
 #application log files
-Server_Side/logs/
+Server_Side/logs/*
+
 
 npm-debug.log
 Server_Side/logs/app_trace.log
@@ -19,3 +23,4 @@ keyValStore
 
 coverage/
 .vscode
+

@@ -40,12 +40,15 @@ let startup            = require(__dirname+'/Server_Side/configurations/startup/
 let http = require('http');
 
 const SecurityContext = require(__dirname+'/Server_Side/tools/security/securitycontext');
+let CloudantKeyStore = require(__dirname + '/Server_Side/cloudantKeyStore.js')
+let cloudantCache =   require(__dirname+'/Server_Side/cache/cloudantCache.js')
 
 // Object of users' names linked to their security context
 let usersToSecurityContext = {};
+let chainCodeAlreadyDeployed  = false ;
 
 let port = process.env.VCAP_APP_PORT || configFile.config.appPort;
-
+let useCloudantStore  = configFile.config.useCloudantStore ;
 
 ////////  Pathing and Module Setup  ////////
 app.use(bodyParser.json());
@@ -321,9 +324,14 @@ if (process.env.VCAP_SERVICES) {
 }
 
 // Setup HFC
-let chain = hfc.newChain('myChain');
-//This is the location of the key store HFC will use. If running locally, this directory must exist on your machine
-chain.setKeyValStore(hfc.newFileKeyValStore(configFile.config.key_store_location));
+let chain = hfc.getChain('myChain3',true); // create if not already exists
+
+if ( useCloudantStore){
+    chain.setKeyValStore( new CloudantKeyStore());
+}else{
+    //This is the location of the key store HFC will use. If running locally, this directory must exist on your machine
+    chain.setKeyValStore(hfc.newFileKeyValStore(configFile.config.key_store_location));
+}
 
 //TODO: Change this to be a boolean stating if ssl is enabled or disabled
 //Retrieve the certificate if grpcs is being used
@@ -362,6 +370,7 @@ if (process.env.VCAP_SERVICES) { // We are running in bluemix
     credentials = JSON.parse(credentials);
     startup.connectToPeers(chain, credentials.peers);
     startup.connectToCA(chain, credentials.ca);
+    
     //startup.connectToEventHub(chain, credentials.peers[0]);
 }
 //chain.getEventHub().disconnect();
@@ -424,17 +433,41 @@ return startup.enrollRegistrar(chain, configFile.config.registrar_name, webAppAd
         usersToSecurityContext[user.getName()] = new SecurityContext(user);
     });
 })
-.then(function(){
-    tracing.create('INFO', 'Startup', 'Checking if chaincode is deployed');
-    return new Promise(function(resolve, reject) {
-        fs.readFile('chaincode.txt', 'utf8', function(err, contents) {
-            if (err) {
-                resolve(false);
-            } else {
-                resolve(contents);
-            }
+.then( function(){
+  if(useCloudantStore){
+       tracing.create('INFO', 'Startup', 'Checking if chaincode is deployed');
+       return cloudantCache.readObjectFromCache("chaincodeID")
+    }else {
+        return null ;
+    }
+})
+.catch(function(err){
+    tracing.create('INFO', 'Startup', 'ChaincodeId not found.');  
+    return null ; 
+})
+.then(function(chainCodeObj){
+    if ( useCloudantStore && chainCodeObj){
+        chainCodeAlreadyDeployed = true ;
+        return chainCodeObj.chaincodeID ;
+    }else{
+        return null ;
+    }
+})
+.then(function(cc){
+    if (!cc){
+        return new Promise(function(resolve, reject) {
+            fs.readFile('chaincode.txt', 'utf8', function(err, contents) {
+                if (err) {
+                    resolve(false);
+                } else {
+                    resolve(contents);
+                }
+            });
         });
-    });
+    }else{
+        return cc;
+    }
+    
 })
 .then(function(cc) { //ChaincodeID exists or doesnt
     if (cc) {
@@ -474,6 +507,13 @@ return startup.enrollRegistrar(chain, configFile.config.registrar_name, webAppAd
     if (eventEmitter) {
         eventEmitter.emit('setup', demoStatus);
     }
+    return deploy ;
+}).then(function(deploy){
+    if( useCloudantStore && !chainCodeAlreadyDeployed){
+        return cloudantCache.addObjectToCache("chaincodeID", deploy); 
+        //store chaincodeId in cloudant
+    }
+    
 })
 .then(function() {
     // Query the chaincode every 3 minutes

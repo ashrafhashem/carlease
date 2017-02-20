@@ -39,6 +39,9 @@ config.registrar_password = 'DJY27pEnl16d';
 //Protocol used by HFC to communicate with blockchain peers and CA, need to change this manually.
 config.certificate_file_name    = 'certificate.pem';
 config.key_store_location       = './keyValStore';
+config.useCloudantStore = true // If true, app will use cloudant db as key store for persistence instead of Filesystem.
+config.cloudant_db = "car-lease-demo-bluemix"
+config.cloudant_url = "https://09636bc8-5f54-40eb-adb8-ae7af6df0cbc-bluemix:7989cdfcbb202bbb5662b9d92ece63806af88bf0ea77129b2f6a3531d53aa12c@09636bc8-5f54-40eb-adb8-ae7af6df0cbc-bluemix.cloudant.com"
 
 //--------------------------------------------------------------------------------------------------------------------
 //    Chaincode
