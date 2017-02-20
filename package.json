@@ -19,7 +19,6 @@
     "request": "^2.79.0",
     "socket.io": "^1.7.2",
     "x509": "",
-    "redis" : "*",
     "cfenv" : "*",
     "cloudant" : "*"
   },
