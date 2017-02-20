@@ -15,8 +15,8 @@ var db;
 function initDBConnection() {
     // Within the application environment (appenv) there's a services object
     var services = appenv.services;
-    // The services object is a map named by service so we extract the one for Redis
-    var cloudant_services = services["cloudant"];
+    // The services object is a map named by service so we extract the one for Cloudant
+    var cloudant_services = services["cloudantNoSQLDB"];
 
     if (cloudant_services){
         // We now take the first bound Redis service and extract it's credentials object
