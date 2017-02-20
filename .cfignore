@@ -3,5 +3,3 @@
 credentials.json
 keyValStore
 chaincode.txt
-node_modules
-Server_Side/logs
