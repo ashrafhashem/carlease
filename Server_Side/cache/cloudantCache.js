@@ -28,16 +28,24 @@ function initDBConnection() {
     cloudant = require('cloudant')({ url: credentials.url, plugin:'retry', retryAttempts:5, retryTimeout:1000  });
 
     // check if DB exists if not create
-    cloudant.db.create(configFile.config.cloudant_db, function(err, res) {
-        if (err) {
-            console.log('Could not create new db: ' + configFile.config.cloudant_db + ', it might already exist.');
-        }
-    });
+    return new Promise(function( resolve, reject){
+        cloudant.db.create(configFile.config.cloudant_db, function(err, res) {
+            if (err) {
+                console.log('Could not create new db: ' + configFile.config.cloudant_db + ', it might already exist.');
+             }else {
+                console.log ("Created db");   
+            }
+            db = cloudant.use(configFile.config.cloudant_db);
+            resolve(true)
+        });
 
-    db = cloudant.use(configFile.config.cloudant_db);
+    })
+    
+
+    
 }
 
-initDBConnection();
+
 
 /// Connect to cloudant service
 //var cloudant=Cloudant( { url: credentials.url, plugin:'retry', retryAttempts:5, retryTimeout:1000  })
@@ -126,6 +134,7 @@ module.exports = {
     addObjectToCache: addObjectToCache,
     readObjectFromCache : readObjectFromCache,
     addObjectToCacheCB: addObjectToCacheCB,
-    readObjectFromCacheCB: readObjectFromCacheCB
+    readObjectFromCacheCB: readObjectFromCacheCB,
+    initDBConnection: initDBConnection
     
 }

@@ -41,7 +41,7 @@ config.certificate_file_name    = 'certificate.pem';
 config.key_store_location       = './keyValStore';
 config.useCloudantStore = true // If true, app will use cloudant db as key store for persistence instead of Filesystem.
 config.cloudant_db = "car-lease-demo-bluemix"
-config.cloudant_url = "https://99f99024-7769-4b9c-a01b-0fa7ed4adc37-bluemix:e6b962c0ce89f09889b39619b7d770499e12b9fd80f9647a8650200687350a9a@99f99024-7769-4b9c-a01b-0fa7ed4adc37-bluemix.cloudant.com"
+config.cloudant_url = ""
 
 //--------------------------------------------------------------------------------------------------------------------
 //    Chaincode

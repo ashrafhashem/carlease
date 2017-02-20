@@ -414,7 +414,10 @@ function setSetupError(err) {
 
 let chaincodeID;
 
-return startup.enrollRegistrar(chain, configFile.config.registrar_name, webAppAdminPassword)
+return cloudantCache.initDBConnection()
+.then(function(){
+    return startup.enrollRegistrar(chain, configFile.config.registrar_name, webAppAdminPassword)
+})
 .then(function(r) {
     registrar = r;
     chain.setRegistrar(registrar);

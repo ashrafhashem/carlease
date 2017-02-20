@@ -3,8 +3,8 @@ declared-services:
   car_lease_blockchain:
     label: ibm-blockchain-5-prod
     plan: ibm-blockchain-plan-5-prod
-  cloudant-dev-1:
-   label: cloudant-dev-1
+  car_lease_cloudant:
+   label: cloudantNoSQLDB
    plan : Lite
 applications:
 - disk_quota: 1024M
@@ -15,5 +15,5 @@ applications:
   memory: 512M
   services:
     - car_lease_blockchain
-    - cloudant-dev-1
+    - car_lease_cloudant
 
