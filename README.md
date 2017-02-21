@@ -1,6 +1,14 @@
 Car Lease Demo
 =======
 
+This is forked from the original car-lease-demo application, which uses File based keystores and hence have an issue when app deployed on bluemix needs to be restarted or redeployed. This project uses cloudant db with Lite plan ( which is free ) 
+
+#Changes are in :
+1. [app.js] (app.js)
+2. [configuration.js] (Server_Side/configurations/configuration.js)
+3. [cloudantKeyStore] (Server_Side/cloudantKeyStore.js)
+4. [cloudantCache.js] (Server_Side/cache/cloudantCache.js)
+
 ##Deploying the demo##
 To deploy to Bluemix simply use the button below then follow the instructions. This will generate the NodeJS server and the Blockchain service for you.
 

@@ -26,7 +26,7 @@ The application makes use of a number of modules developed externally that must 
 
 ###Updating the configurations file###
 
-When deploying locally the following settings need to be changed in the configuration.js file:
+1. When deploying locally the following settings need to be changed in the configuration.js file:
 
 `config.networkProtocol = 'http';`
 
@@ -34,7 +34,18 @@ When deploying locally the following settings need to be changed in the configur
 
 `config.hfcProtocol = 'grpc';`
 
+
+2. If you want to use use File based keystore, set property 
+
+`config.useCloudantStore = false `
+
+3. If you want to use cloudantKeyStore update the property
+
+`config.cloudant_url= <credentials.url>`  from the cloudant service instance in bluemix.
+
+You need to do either 2 or 3 when running locally using docker or connecting to bluemix peer.
 More information on the configuration file can be found in [Server Side.md](/Documentation/Server Side.md)
+
 
 ####Connecting to a non-default NodeJS server####
 
