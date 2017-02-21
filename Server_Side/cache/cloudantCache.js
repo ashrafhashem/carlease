@@ -19,7 +19,7 @@ function initDBConnection() {
     var cloudant_services = services["cloudantNoSQLDB"];
 
     if (cloudant_services){
-        // We now take the first bound Redis service and extract it's credentials object
+        // We now take the first bound cloudant service and extract it's credentials object
         credentials = cloudant_services[0].credentials;
     }else{ // not on bluemix
          credentials.url = configFile.config.cloudant_url ;
@@ -100,7 +100,7 @@ function readObjectFromCache( objectKey){
         db.get(objectKey,function(err, data) {
             if (!err){
                 tracing.create('INFO', 'readObjectFromCache', objectKey + ' read  from cache ');
-                 console.log ( data)
+                // console.log ( data)
                 resolve( data)
                
             }else {
@@ -116,7 +116,7 @@ function readObjectFromCacheCB( objectKey, cb){
         db.get(objectKey,function(err, data) {
             if (!err){
                 tracing.create('INFO', 'Cache', objectKey + ' read  from cache ');
-                 console.log ( data)
+                 //console.log ( data)
                  cb(null, data)
                 
                
