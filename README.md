@@ -3,20 +3,20 @@ Car Lease Demo
 
 This is forked from the original car-lease-demo application, which uses File based keystores and hence have an issue when app deployed on bluemix needs to be restarted or redeployed. This project uses cloudant db with Lite plan ( which is free ) 
 
-#Changes are in :
+# Changes are in : #
 1. [app.js] (app.js)
 2. [configuration.js] (Server_Side/configurations/configuration.js)
 3. [cloudantKeyStore] (Server_Side/cloudantKeyStore.js)
 4. [cloudantCache.js] (Server_Side/cache/cloudantCache.js)
 
-##Deploying the demo##
+## Deploying the demo ##
 To deploy to Bluemix simply use the button below then follow the instructions. This will generate the NodeJS server and the Blockchain service for you.
 
 [![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://hub.jazz.net/deploy/index.html?repository=https://github.com/sachinjha/car-lease-demo-1486642013191.git)
 
 To deploy the demo locally follow the instructions [here](Documentation/Installation Guide.md#deploying-locally)
 
-##Application overview##
+## Application overview ##
 This application is designed to demonstrate how assets can be modeled on the Blockchain using a car leasing scenario. In the scenario vehicles are modeled using Blockchain technology with the following attributes:
 
 | Attribute       | Type                                                                                                  |
@@ -47,12 +47,12 @@ The demonstration allows a view of the ledger that stores all the interactions t
 
 > Note: The demo currently does not include the ability to lease cars however shows the process of what would happen once the lease has ended and the final payment has been made showing the lease company transferring full ownership of the asset to the leasee.
 
-##Application scenario##
+## Application scenario ##
 The scenario goes through the lifecycle of a car which has the following stages:
 
 ![Application scenario overview](/Images/Scenario_Overview.png)
 
-####Stages:####
+#### Stages: ####
 
  1. Vehicle is created as a template by the regulator.
  2. Vehicle template is transferred to the manufacturer.
@@ -63,7 +63,7 @@ The scenario goes through the lifecycle of a car which has the following stages:
  7. Leasee transfers the vehicle to a scrap merchant so that it can be scrapped.
  8. Scrap merchant scraps the vehicle.
 
-##Component model##
+## Component model ##
 The demo is built using a 3 tier architecture. The user interacts with the demo using a [web front end](Documentation/Client_Side.md) that is provided by the NodeJS server in the middle tier. This web front end uses JavaScript to make HTTP requests to the NodeJS server which has an API ([defined here](Documentation/API Methods.md)) which in turn makes calls via HTTP to the HyperLedger fabric to get details about the blockchain and also interact with the [chaincode](Chaincode/vehicle_code/vehicles.go). Information on the chaincode interface can be found [here](Documentation/Chaincode Interface.md)
 
 ![Technical Component Model](/Images/Technical_Component_Model.png)
